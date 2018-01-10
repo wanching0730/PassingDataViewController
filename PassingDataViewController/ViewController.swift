@@ -8,8 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CanReceive {
 
+    @IBOutlet weak var dataTextField: UITextField!
+    @IBOutlet weak var forwardButton: UIButton!
+    @IBOutlet weak var nameLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -20,6 +24,27 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func forwardBtnPressed(_ sender: Any) {
+        
+        performSegue(withIdentifier: "sendDataForward", sender: self)
+        
+    }
 
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "sendDataForward" {
+            
+            let secondVC = segue.destination as! SecondViewController
+            
+            secondVC.data = dataTextField.text!
+            
+            secondVC.delegate = self
+        }
+    }
+    
+    func dataReceived(data: String) {
+        nameLabel.text = data
+    }
+    
 }
 
